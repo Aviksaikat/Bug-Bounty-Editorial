@@ -1,0 +1,7 @@
+messi 10
+ronaldo 7
+pulisic 22
+giroud 18
+drogba 11
+lampard 8
+terry 8
