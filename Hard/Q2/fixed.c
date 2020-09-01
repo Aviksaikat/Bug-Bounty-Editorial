@@ -68,25 +68,25 @@ int main()
     int n, k;
     FILE *file = fopen("input.txt", "r");
     fscanf(file, "%d %d", &n, &k);
-    int p[n], t[n], i;
+    int problemsSolved[n], timePenalty[n], i;
     for (i = 0; i < n; i++)
-        fscanf(file, "%d %d", &p[i], &t[i]);
-    int tm, j;
+        fscanf(file, "%d %d", &problemsSolved[i], &timePenalty[i]);
+    int temp, j;
     char hashInput[2];
 
     for (i = 0; i < n; i++)
     {
         for (j = i + 1; j < n; j++)
         {
-            if (p[j] > p[i])
+            if (problemsSolved[j] > problemsSolved[i])
             {
-                tm = p[j];
-                p[j] = p[i];
-                p[i] = tm;
+                temp = problemsSolved[j];
+                problemsSolved[j] = problemsSolved[i];
+                problemsSolved[i] = temp;
 
-                tm = t[j];
-                t[j] = t[i];
-                t[i] = tm;
+                temp = timePenalty[j];           // Buggy file says, 'timePenalty[i]' instead of 'timePenalty[j]'
+                timePenalty[j] = timePenalty[i]; // Buggy file says, 'timePenalty[i] = timePenalty[j]' instead of 'timePenalty[j] = timePenalty[i]'
+                timePenalty[i] = temp;           // Buggy file says, 'timePenalty[j]' instead of 'timePenalty[i]'
             }
         }
     }
@@ -95,32 +95,35 @@ int main()
     {
         for (j = i + 1; j < n; j++)
         {
-            if (p[i] > p[j])
-                break;
-            if (t[i] > t[j])
+            if (problemsSolved[i] > problemsSolved[j])
+                break; // Buggy file says, 'continue' instead of 'break'
+            if (timePenalty[i] > timePenalty[j])
             {
-                tm = t[i];
-                t[i] = t[j];
-                t[j] = tm;
+                temp = timePenalty[i];
+                timePenalty[i] = timePenalty[j];
+                timePenalty[j] = temp;
             }
         }
     }
 
-    int x = p[k - 1], y = t[k - 1], ans = 1;
+    int problemsSolvedByKthTeam = problemsSolved[k - 1], // Buggy file says, 'problemsSolved[k]' instead of 'problemsSolved[k - 1]'
+        timePenaltyForKthTeam = timePenalty[k - 1],      // Buggy file says, 'timePenalty[k]' instead of 'timePenalty[k - 1]'
+        teamsSharingKthPlace = 1;                        // Buggy file says, '0' instead of '1'
+
     for (i = k - 2; i >= 0; i--)
     {
-        if (p[i] != x || t[i] != y)
+        if (problemsSolved[i] != problemsSolvedByKthTeam || timePenalty[i] != timePenaltyForKthTeam) // Buggy file says, '&&' instead of '||'
             break;
-        ans++;
+        teamsSharingKthPlace++;
     }
 
     for (i = k; i < n; i++)
     {
-        if (p[i] != x || t[i] != y)
+        if (problemsSolved[i] != problemsSolvedByKthTeam || timePenalty[i] != timePenaltyForKthTeam) // Buggy file says, '&&' instead of '||'
             break;
-        ans++;
+        teamsSharingKthPlace++;
     }
-    sprintf(hashInput, "%d", ans);
+    sprintf(hashInput, "%d", teamsSharingKthPlace);
     printf("Key : %lu\n", hash(hashInput));
 
     return 0;

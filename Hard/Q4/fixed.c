@@ -19,6 +19,11 @@
     
     KEY: 3088598729
 
+    {
+        TEST RESULTS:   1) OS - Windows(WSL), Ubuntu
+                        2) Editor - VS Code
+                        3) Key - As expected
+    }
 */
 
 #include <stdio.h>
@@ -41,11 +46,11 @@ int main()
 
     while (l <= r)
     {
-        int mid = (l + r) / 2;  ////BUG CORRECTED - Should be "(l + r) / 2" not "l + r/2 
+        int mid = (l + r) / 2; ////BUG CORRECTED - Should be '(l + r) / 2' instead of 'l + r / 2'
 
         if (isValid(s, mid))
         {
-            if (mid < currentMinimumLength)   ////BUG CORRECTED - Should be mid < currentMinimumLength instead of mid > currentMinimumLength
+            if (mid < currentMinimumLength) ////BUG CORRECTED - Should be 'mid < currentMinimumLength' instead of 'mid > currentMinimumLength'
                 currentMinimumLength = mid;
             r = mid - 1;
         }
@@ -62,7 +67,7 @@ int main()
 
 bool isValid(char s[], int k)
 {
-    int frequency[4] = {0};  ////BUG CORRECTED - Should be frequency[4] instead of frequency[3]
+    int frequency[4] = {0}; ////BUG CORRECTED - Should be 'frequency[4]' instead of 'frequency[3]'
 
     for (int i = 0; i < k; ++i)
         ++frequency[s[i] - '0'];
@@ -70,8 +75,8 @@ bool isValid(char s[], int k)
     {
         if (frequency[1] > 0 && frequency[2] > 0 && frequency[3] > 0)
             return true;
-        ++frequency[s[i] - '0'];    ////BUG CORRECTED - Should be ++frequency instead of --frequency
-        --frequency[s[i - k] - '0'];    ////BUG CORRECTED - Should be --frequency instead of ++frequency
+        ++frequency[s[i] - '0'];     ////BUG CORRECTED - Should be '++frequency' instead of '--frequency'
+        --frequency[s[i - k] - '0']; ////BUG CORRECTED - Should be '--frequency' instead of '++frequency'
     }
 
     if (frequency[1] > 0 && frequency[2] > 0 && frequency[3] > 0)

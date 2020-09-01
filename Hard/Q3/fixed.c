@@ -41,6 +41,11 @@
 
     KEY: 4207081239
 
+    {
+        TEST RESULTS:   1) OS - Windows(WSL), Ubuntu
+                        2) Editor - VS Code
+                        3) Key - As expected
+    }
 */
 
 #include <stdio.h>
@@ -48,48 +53,48 @@
 
 int main()
 {
-    char s[6];
-    int t, n, i = 0;
+    char hashInput[6];
+    int t, n, index = 0;
     FILE *file = fopen("input.txt", "r");
     fscanf(file, "%d", &t);
 
     while (t--)
     {
         fscanf(file, "%d", &n);
-        int x, freq[101] = {0};
+        int weightInput, frequency[101] = {0}; // Buggy file says, 'frequency[101]' instead of 'frequency[101] = {0}'
         for (int i = 0; i < n; ++i)
         {
-            fscanf(file, "%d", &x);
-            ++freq[x];
+            fscanf(file, "%d", &weightInput);
+            ++frequency[weightInput];
         }
 
-        int ans = 0;
+        int maxNumberOfTeams = 0;
         for (int s = 2; s <= 2 * n; ++s)
         {
-            int curr = 0;
+            int currentNumberOfTeams = 0;
 
-            for (int i = 1; i < (s + 1) / 2; ++i)
+            for (int i = 1; i < (s + 1) / 2; ++i) // Buggy file says, 'i <= (s + 1) / 2' instead of 'i < (s + 1) / 2'
             {
                 if (s - i > n)
-                    continue;
+                    continue; // Buggy file says, break instead of break
 
-                if (freq[i] < freq[s - i])
-                    curr += freq[i];
+                if (frequency[i] < frequency[s - i])
+                    currentNumberOfTeams += frequency[i];
                 else
-                    curr += freq[s - i];
+                    currentNumberOfTeams += frequency[s - i];
             }
             if (s % 2 == 0)
-                curr += freq[s / 2] / 2;
+                currentNumberOfTeams += frequency[s / 2] / 2; // Buggy file says, 'frequency[s / 2]' instead of 'frequency[s / 2] / 2'
 
-            if (curr > ans)
-                ans = curr;
+            if (currentNumberOfTeams > maxNumberOfTeams)
+                maxNumberOfTeams = currentNumberOfTeams;
         }
 
-        s[i] = simpleHash(ans);
-        ++i;
+        hashInput[index] = simpleHash(maxNumberOfTeams);
+        ++index;
     }
-    s[5] = '\0';
-    printf("Key : %u\n", complexHash(s));
+    hashInput[5] = '\0';
+    printf("Key : %u\n", complexHash(hashInput));
 
     fclose(file);
 
